@@ -1,0 +1,168 @@
+<div class="dark-bg"></div>
+<div id="bom-holder">
+    <div class="bom">
+        <h2 class="md-heading text-center">Bill of Materials</h2>
+        <div class="bom-table-holder">
+            <table class="table table-hover table-striped table-mc-light-green">
+                <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th class="for-print"></th>
+                    <th>
+                        &nbsp;
+                    </th>
+                    <th style="width: 100px;" class="text-center">
+                        Quantity
+                    </th>
+                    <th>
+                        $/Unit
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th class="not-for-print" style="width: 100px;">
+                        &nbsp;
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="part in config.getSelectableParts() | filter:selectablePartFilter()">
+                        <td>
+                            {{config[part+'Model']}}
+                        </td>
+                        <td>
+                            {{config[part+'Manufacturer']}}
+                            {{config[part+'Model']}}
+                        </td>
+                        <td class="for-print">
+
+                        </td>
+                        <td >
+                            &nbsp;
+                        </td>
+                        <td class="">
+                            <span class="for-print" flex>{{config.userParts[part]}}</span>
+                            <md-input-container class="not-for-print" flex>
+                                <input type="number" ng-blur="edits[part+'Enabled'] = false"
+                                       ng-disabled="!edits[part+'Enabled']" focus-me="edits[part+'Enabled']"
+                                       required ng-model="config.userParts[part]" aria-label="user {{part}}">
+                            </md-input-container>
+                        </td>
+                        <td>
+                            {{config.priceFor(part, config.userParts[part], 1) | currency}}
+                        </td>
+                        <td>
+                            {{config.priceFor(part, config.userParts[part], config.userParts[part]) | currency}}
+                        </td>
+                        <td class="not-for-print">
+                            <md-button class="md-raised md-mini" ng-click="config.resetQty(part)">
+                                <md-tooltip>
+                                    Reset to Recommended Quantity
+                                </md-tooltip>
+                                <i class="fa fa-refresh"></i>
+                            </md-button>
+                            <md-button class="md-raised md-mini" ng-click="edits[part+'Enabled'] = true;">
+                                <md-tooltip>
+                                    Edit Quantity
+                                </md-tooltip>
+                                <i class="fa fa-pencil-square-o"></i>
+                            </md-button>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="part in config.staticParts() | filter:partFilter()">
+                        <td>
+                            {{part[config.partColor[part.slug]].code}}
+                        </td>
+                        <td>
+                            {{part[config.partColor[part.slug]].description}}
+                        </td>
+                        <td class="for-print">
+                        </td>
+                        <td >
+                            <md-select class="" flex placeholder="Change Zoom"  ng-model="config.partColor[part.slug]" ng-change="layout.generateModels()">
+                                <md-select-label>{{config.partColor[part.slug] == "BC" ? "Black" : "Mill Finish"}}</md-select-label>
+                                <md-option ng-value="n" ng-repeat="n in part.colors">{{ n == "BC" ? "Black" : "Mill Finish" }}</md-option>
+                            </md-select>
+                        </td>
+                        <td class="">
+                            <span class="for-print" flex>{{config.userParts[part.slug]}}</span>
+                            <md-input-container class="not-for-print" flex>
+                                <input type="number" ng-blur="edits[part.slug+'Enabled'] = false"
+                                       ng-disabled="!edits[part.slug+'Enabled']" focus-me="edits[part.slug+'Enabled']"
+                                       required ng-model="config.userParts[part.slug]" aria-label="user {{part.slug}}">
+                            </md-input-container>
+                        </td>
+                        <td>
+                            {{config.getPrice(part['price'][config.partColor[part.slug]], config.userParts[part.slug], 1) | currency}}
+                        </td>
+                        <td>
+                            {{config.getPrice(part['price'][config.partColor[part.slug]], config.userParts[part.slug], config.userParts[part.slug]) | currency}}
+                        </td>
+                        <td class="not-for-print">
+                            <md-button class="md-raised md-mini" ng-click="config.resetQty(part.slug)">
+                                <md-tooltip>
+                                    Reset to Recommended Quantity
+                                </md-tooltip>
+                                <i class="fa fa-refresh"></i>
+                            </md-button>
+                            <md-button class="md-raised md-mini" ng-click="edits[part.slug+'Enabled'] = true;">
+                                <md-tooltip>
+                                    Edit Quantity
+                                </md-tooltip>
+                                <i class="fa fa-pencil-square-o"></i>
+                            </md-button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="5" class="text-right">
+                        Total:
+                    </td>
+                    <td class="">
+                        {{config.totalPrice() | currency}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-right">
+                        Cost Per Watt :
+                    </td>
+                    <td class="">
+                        {{config.totalPrice() / (config.userParts['module'] * config.moduleWatt) | currency}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-right">
+                        Cost Per Panel :
+                    </td>
+                    <td class="">
+                        {{config.totalPrice() / config.userParts['module'] | currency}}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="bom-action" layout="row" layout-align="end end">
+            <md-button class="md-raised ng-isolate-scope" ng-click="project.save($event)">
+                Save
+            </md-button>
+            <md-button class="md-raised ng-isolate-scope" ng-click="addToCart($event)">
+                Add To Cart
+            </md-button>
+            <md-button class="md-raised ng-isolate-scope" ng-click="printReport()">
+                Print
+            </md-button>
+            <md-button class="md-raised ng-isolate-scope" ng-click="downloadCSV($event)">
+                Download CSV
+            </md-button>
+            <md-button ui-sref="project" class="md-raised md-accent">
+                Close
+            </md-button>
+        </div>
+    </div>
+</div>

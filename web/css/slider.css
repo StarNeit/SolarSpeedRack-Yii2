@@ -1,0 +1,90 @@
+/******* ToolTip *******/
+output { 
+  position: absolute;
+  background-color: rgb(141,197,68);
+  width: 40px; 
+  height: 25px;
+  padding: 0;
+  line-height: 25px;
+  text-align: center; 
+  color: white; 
+  border-radius: 4px; 
+  border: 2px solid #000;
+  display: inline-block; 
+  bottom: 350%;
+  left: 0;
+  margin-left: -3.5%;
+}
+output:before { 
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 6px solid rgb(141,197,68);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  top: 100%;
+  left: 50%;
+  margin-left: -6px;
+  margin-top: -2px;
+  z-index: 10;
+}
+output:after { 
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 6px solid #000;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  top: 100%;
+  left: 50%;
+  margin-left: -8px;
+}
+form { 
+  position: relative; 
+  margin: 50px 50px 20px 50px;
+}
+/******* End ToolTip *******/
+
+/******* SliderBar *******/
+input[type="range"]:focus {
+  outline: none;
+}
+input[type="range"]{
+    -webkit-appearance: none;
+    -moz-apperance: none;
+    border-radius: 6px;
+    height: 6px;
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(0, #00aeef),
+        color-stop(0, #C5C5C5)
+    );
+}
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    background-color: #00aeef;
+    border: 1px solid #00aeef;
+    height: 15px;
+    width: 15px;
+  	border-radius: 15px;
+}
+
+.start {
+  position: absolute;
+  left: -8%;
+  top: -7px;
+  font-weight: bold;
+  color: #707070;
+}
+.end {
+  position: absolute;
+  right: -15%;
+  top: -7px;
+  font-weight: bold;
+  color: #707070;
+}
+/******* End SliderBar *******/

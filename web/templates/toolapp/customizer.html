@@ -1,0 +1,53 @@
+<div class="dark-bg"></div>
+<div class="customizer">
+    <h3 class="text-center">
+        Customize Module
+    </h3>
+    <div class="full-body" style="width: {{config.moduleWidth * 5 + 200}}px;">
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="power-div">
+                    <md-input-container class="md-block">
+                        <label>Power</label>
+                        <input type="number" required ng-change="config.customized()" ng-model="config.moduleWatt" placeholder="Enter the Power here...">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="col-xs-4 text-right">
+                <md-button ng-click="config.customized(true)" class="md-raised md-primary">
+                    Default
+                </md-button>
+                <md-button ui-sref="project" class="md-raised md-accent">
+                    X
+                </md-button>
+            </div>
+        </div>
+        <div class="module-holder">
+            <div class="module-div" style="width: {{config.moduleWidth * 5}}px;height: {{config.moduleLength * 5}}px"></div>
+            <div class="module-side" style="width: {{config.moduleHeight * 5}}px;height: {{config.moduleLength * 5}}px"></div>
+            <div class="length-div" style="padding: {{config.moduleLength * 2}}px 0">
+                <md-input-container class="md-block">
+                    <label>Length</label>
+                    <input type="number" required ng-change="config.customized()" ng-model="config.moduleLength" placeholder="Enter the Length here...">
+                </md-input-container>
+            </div>
+        </div>
+        <div class="module-dimensions">
+            <div class="width-div"style="width: {{config.moduleWidth * 5}}px;">
+                <md-input-container class="md-block">
+                    <label>Width</label>
+                    <input type="number" required ng-change="config.customized()" ng-model="config.moduleWidth" placeholder="Enter the Width here...">
+                </md-input-container>
+            </div>
+            <div class="height-div">
+                <md-input-container class="md-block">
+                    <label>Depth</label>
+                    <input type="number" required step="0.1" required ng-change="config.customized()" ng-model="config.moduleHeight" placeholder="Enter the Height here...">
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+    <p class="text-center">
+        <md-button class="md-button md-raised" ui-sref="project.select({type:'module'})">Quick Select</md-button>
+    </p>
+</div>

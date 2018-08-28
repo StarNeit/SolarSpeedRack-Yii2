@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'LucidaGrande-Bold';
+  src: url('LucidaGrande-Bold.eot');
+  src: url('LucidaGrande-Bold.woff2') format('woff2'),
+       url('LucidaGrande-Bold.woff') format('woff'),
+       url('LucidaGrande-Bold.ttf') format('truetype'),
+       url('LucidaGrande-Bold.svg#LucidaGrande-Bold') format('svg'),
+       url('LucidaGrande-Bold.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LucidaGrande';
+  src: url('LucidaGrande.eot');
+  src: url('LucidaGrande.woff2') format('woff2'),
+       url('LucidaGrande.woff') format('woff'),
+       url('LucidaGrande.ttf') format('truetype'),
+       url('LucidaGrande.svg#LucidaGrande') format('svg'),
+       url('LucidaGrande.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+

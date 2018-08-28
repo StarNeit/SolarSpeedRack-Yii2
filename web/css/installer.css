@@ -1,0 +1,67 @@
+.map_wrap .client_list img{
+    height: 18px;
+}
+.map_wrap ul.client_list li{
+    list-style: none;
+    cursor: pointer;
+}
+.map_wrap ul.client_list li:hover{
+    background-color: #f5f5f5;
+}
+.map_wrap ul.client_list li span{
+    font-size: 16px;
+    padding-left: 10px;
+}
+.map_wrap ul.client_list{
+    padding: 5px;
+}
+.map_wrap ul.client_list {
+    padding: 10px 5px 0px 10px;
+}
+.map_wrap .title{
+    font-size: 16px;
+}
+.map_wrap #menu-widget {
+    width: 300px;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    background-color: white;
+    font-family: Roboto, Arial;
+    font-size: 13px;
+    margin: 15px;
+}
+.map_wrap #search-widget{
+    width: 300px;
+    min-height: 40px;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    background-color: white;
+    font-family: Roboto, Arial;
+    font-size: 13px;
+    margin: 15px;
+}
+.map_wrap .search-btn{
+    cursor: pointer;
+}
+.map_wrap #search-widget .inner{
+    padding: 5px;
+}
+
+.map_wrap #menu-widget .inner{
+    margin: 8px;
+    border: 1px solid #f5f5f5;
+}
+.map_wrap #menu-widget .inner .title{
+    padding-left: 8px;
+    display: block;
+}
+.projects-installer .user-content{
+    border: 1px solid;
+    border-color: #ddd;
+    margin-top: 22px;
+    border-radius: 2px;
+}
+.projects-installer .map_wrap {
+    margin-top: 30px;
+}
+.map_wrap .inf-lat {
+    margin-top: 10px;
+}

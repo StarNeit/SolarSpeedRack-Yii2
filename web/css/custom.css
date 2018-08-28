@@ -1,0 +1,52 @@
+.place__main {
+    height: 78vh;
+    min-height: 550px;
+}
+.place__hidden.active {
+    display: block;
+}
+.email__input-holder {
+    width: 400px;
+}
+
+.email__input {
+    width: 270px;
+    float: left;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-right: 0;
+}
+#section1 .email__input-holder button {
+    width: 130px;
+    min-width: 100px;
+    font-size: 14px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+}
+.rs-handle {
+    display: block;
+    background-color: #5cb85c;
+}
+#shape .rs-border.rs-inner {
+    border: 2px dashed;
+}
+.place__main-icon-holder {
+    margin-bottom: 20px;
+    margin-left: 15px;
+    position: relative;
+    cursor: pointer;
+    border: 5px solid transparent;
+    transition: all .3s ease;
+}
+.dashboard .control-panel__row {
+    position: relative;
+    top: auto;
+}
+.body-wrap {
+    padding-top: 80px;
+    min-height: calc(100% - 150px);
+}
+.gm-iv-address-link {
+    display: none;
+}

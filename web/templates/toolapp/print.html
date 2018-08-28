@@ -1,0 +1,50 @@
+<div class="for-print">
+    <div id="print-top">
+        <div class="row">
+            <div class="plogo">
+                <img src="/images/logo.png" />
+            </div>
+            <div class="pinfo">
+                <p><b>Project ID:</b> {{config.id}}</p>
+                <p><b>Date:</b> {{today | date:'MMM d, y h:mm a'}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span4">
+                <p><b>Project Name:</b> {{config.name}}</p>
+                <p><b>Location:</b> {{config.condition}}</p>
+                <p><b>Zip Code:</b> {{config.zipCode}}</p>
+                <p><b>Span Detail</b></p>
+                <p><b>Span Selected:</b> {{config.span / 12}}'</p>
+                <p><b>Maximum Cantilever:</b> {{config.cantilever}}"</p>
+            </div>
+            <div class="span4">
+                <p><b>Module:</b></p>
+                <p><b>Manufacturer:</b> {{config.moduleManufacturer}}</p>
+                <p><b>Model:</b> {{config.moduleModel}}</p>
+                <p><b>Dimension:</b> {{config.moduleLength}}" x {{config.moduleWidth}}" x {{config.moduleHeight}}"</p>
+                <p><b>Watts:</b> {{config.moduleWatt}}W</p>
+            </div>
+            <div class="span4">
+                <p><b>Exposer Type:</b> {{project.exposerTypes[config.exposerType].name}}</p>
+                <p><b>Wind Zone:</b> {{project.windZoneTypes[config.windZoneType].name}}</p>
+                <p><b>Wind Speed:</b> {{config.windSpeed}}mph</p>
+                <p><b>Snow Load:</b> {{config.snowLoad}}psf</p>
+                <p><b>Code:</b> {{project.buildingTypes[config.buildingCode].name}}</p>
+            </div>
+        </div>
+    </div>
+    <ng-include src="'/templates/toolapp/bom.html'"></ng-include>
+    <div class="page" ng-repeat="layout in project.getAllLayout()">
+        <h2 class="text-center">
+            {{layout.name}}
+        </h2>
+
+        <single-layout
+                dm-layout="layout"
+                changed="config.changed"
+                id="{{layout.id}}"
+        >
+        </single-layout>
+    </div>
+</div>

@@ -1,0 +1,575 @@
+<h3 class="md-headline">
+    {{ config.type == 1 ? 'HRS160 Hybrid Racking' : 'Solar SpeedMount' }}
+    <md-menu>
+        <a class="menu-btn" ng-click="$mdOpenMenu()">
+            <md-icon md-menu-origin class="fa fa-gears"></md-icon>
+            Settings
+        </a>
+        <!--</md-button>-->
+        <md-menu-content width="4">
+            <md-menu-item>
+                <md-button class="active">
+                    <md-icon md-menu-align-target class="fa fa-circle"></md-icon>
+                    {{ config.type == 1 ? 'HRS160 Hybrid Racking' : 'Solar SpeedMount' }}
+                </md-button>
+            </md-menu-item>
+            <md-menu-item>
+                <md-button ng-click="project.changeType()" target="_blank">
+                    <md-icon md-menu-align-target class="fa fa-arrows-h"></md-icon>
+                    {{ config.type == 1 ? 'Solar SpeedMount' : 'HRS160 Hybrid Racking' }}
+                </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+                <md-button ng-click="newDesign()" target="_blank">
+                    <md-icon md-menu-align-target class="fa fa-plus"></md-icon>
+                    New Design
+                </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+                <md-button ng-click="browseAll()">
+                    <md-icon md-menu-align-target class="fa fa-database"></md-icon>
+                    Saved Projects
+                </md-button>
+            </md-menu-item>
+        </md-menu-content>
+    </md-menu>
+</h3>
+<div class="row no-padding top-bar">
+    <div class="col-xs-2">
+        <md-input-container class="md-block">
+            <label>Project Title</label>
+            <input ng-model="config.name" type="text" required>
+        </md-input-container>
+    </div>
+    <div class="col-xs-1">
+        <md-input-container class="md-block">
+            <label>Zip Code</label>
+            <input ng-model="config.zipCode" type="text" ng-change="zipChanged()">
+            <div class="location-holder">
+                <span ng-click="getLocation($event)" class="get-location">
+                    <md-tooltip>
+                    Use My Location
+                    </md-tooltip>
+                    <i class="fa fa fa-location-arrow"></i>
+                </span>
+            </div>
+        </md-input-container>
+    </div>
+    <div class="col-xs-1 text-center">
+        <p>
+            Location
+        </p>
+        <p>
+            {{ config.condition }}
+        </p>
+    </div>
+    <div class="col-xs-2 text-center">
+        <p>
+            Total PV Modules
+        </p>
+        <p>
+            {{ config.userParts['module'] }}
+        </p>
+    </div>
+    <div class="col-xs-2 text-center">
+        <p>
+            Total Watts
+        </p>
+        <p>
+            {{ config.userParts['module'] * config.moduleWatt }}
+        </p>
+    </div>
+    <div class="col-xs-2 text-center">
+        <p>
+            Attachment Points
+            <span class="attachment-notification" ng-if="config.getDifference()">
+                <span class="arrow"></span>
+                Save {{config.getDifference()}} penetration when switching to Shared
+            </span>
+        </p>
+        <p>
+            {{ config.userParts['LFootBrackets'] }}
+        </p>
+    </div>
+    <div class="col-xs-2 text-center">
+        <p>
+            Total Cost
+        </p>
+        <p>
+            {{ config.totalPrice() | currency}} ({{config.totalPrice() / (config.userParts['module'] * config.moduleWatt) | currency}}/W)
+        </p>
+    </div>
+</div>
+
+<div class="row top-bar2">
+    <div class="col-xs-3">
+        <md-button class="plus-button" ui-sref="project.select({type:'module'})">
+            <i class="fa fa-plus fa-2x"></i>
+        </md-button>
+        <div class="parts">
+            <p class="heading">
+                PV Module
+            </p>
+            <p class="name">
+                {{ getPart('module') }}
+                <i class="fa fa-times-circle-o closer pull-right ng-scope" ng-if="showDeselect('module')" ng-click="deselect('module')"></i>
+                <i class="fa fa-gear open-customizer pull-right ng-scope" ng-click="customize()"></i>
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <md-button class="plus-button" ui-sref="project.select({type:'inverter'})">
+            <i class="fa fa-plus fa-2x"></i>
+        </md-button>
+        <div class="parts">
+            <p class="heading">
+                Inverter / Optimizer
+                <span class="pull-right">
+                    <md-select class="small-select" flex placeholder="Change Rows"  ng-model="config.inverterType" ng-change="layout.generateModels()">
+                        <md-select-label>{{ project.inverterLabel() }}</md-select-label>
+                        <md-option ng-value="opt.type" ng-repeat="opt in project.inverterTypes">{{ opt.name }}</md-option>
+                    </md-select>
+                </span>
+            </p>
+            <p class="name">
+                {{ getPart('inverter') }}
+                <i class="fa fa-times-circle-o closer pull-right ng-scope" ng-if="showDeselect('inverter')" ng-click="deselect('inverter')"></i>
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <md-button class="plus-button" ui-sref="project.select({type:'ra'})">
+            <i class="fa fa-plus fa-2x"></i>
+        </md-button>
+        <div class="parts">
+            <p class="heading">
+                Mounting Accessories
+            </p>
+            <p class="name">
+                {{ getPart('ra') }}
+                <i class="fa fa-times-circle-o closer pull-right ng-scope" ng-if="showDeselect('ra')" ng-click="deselect('ra')"></i>
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <md-button class="plus-button" ui-sref="project.select({type:'pp'})">
+            <i class="fa fa-plus fa-2x"></i>
+        </md-button>
+        <div class="parts">
+            <p class="heading">
+                Permit Package
+            </p>
+            <p class="name">
+                {{ getPart('pp') }}
+                <i class="fa fa-times-circle-o closer pull-right ng-scope" ng-if="showDeselect('pp')" ng-click="deselect('pp')"></i>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="layout-box row">
+    <div class="col-lg-10 col-xs-10">
+        <div layout="column" id="layout-config" >
+            <div ng-repeat="layout in project.getAllLayout()" ng-show="layout.isActive" class="row layout-holder">
+                <div class="col-xs-3">
+                    <div layout="column">
+                        <div layout="row">
+                            <div>
+                                <p>
+                                    Rows:&nbsp;&nbsp;
+                                </p>
+                            </div>
+                            <div>
+                                <md-select class="" flex placeholder="Change Rows"  ng-model="layout.rows" ng-change="layout.generateModels()">
+                                    <md-select-label>{{layout.rows}}</md-select-label>
+                                    <md-option ng-value="n" ng-repeat="n in toArray(1,41,1)">{{ n }}</md-option>
+                                </md-select>
+                            </div>
+                        </div>
+                        <div>
+                            <md-slider class="md-primary" flex
+                                       ng-model="layout.rows" ng-change="layout.generateModels()"
+                                       step="1" min="1" max="20" aria-label="Rows">
+                            </md-slider>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div layout="column">
+                        <div layout="row">
+                            <div>
+                                <p>
+                                    Columns:&nbsp;&nbsp;
+                                </p>
+                            </div>
+                            <div>
+                                <md-select class="" flex placeholder="Change Columns"  ng-model="layout.columns" ng-change="layout.generateModels()">
+                                    <md-select-label>{{layout.columns}}</md-select-label>
+                                    <md-option ng-value="n" ng-repeat="n in toArray(1,41,1)">{{ n }}</md-option>
+                                </md-select>
+                            </div>
+                        </div>
+                        <div>
+                            <md-slider class="md-primary" flex
+                                       ng-model="layout.columns" ng-change="layout.generateModels()"
+                                       step="1" min="1" max="40" aria-label="Columns">
+                            </md-slider>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div layout="row">
+                        <div>
+                            <p>
+                                Zoom:&nbsp;&nbsp;
+                            </p>
+                        </div>
+                        <div>
+                            <md-select class="" flex placeholder="Change Zoom"  ng-model="layout.scale" ng-change="layout.generateModels()">
+                                <md-select-label>{{(layout.scale - 100)/ 20}}</md-select-label>
+                                <md-option ng-value="(n*20)+100" ng-repeat="n in [-2.5,-2,-1,0,1,2,3,4,5,6,7,8,9,10]">{{ n }}</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div layout="column">
+                        <div>
+                            <md-slider class="md-primary" flex ng-model="layout.scale" step="1" min="50" max="300" aria-label="Zoom">
+                            </md-slider>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div layout="column">
+                        <p>
+                            Alignment:
+                        </p>
+                        <div>
+                            <md-checkbox ng-model="layout.alignCenter" aria-label="Checkbox 3">
+                                Align Center
+                            </md-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2" layout="row" ng-if="config.type == 1">
+                    <md-button ng-click="layout.updateCalculator('standard')" ng-disabled="layout.type== 'standard'" class="tool-icon config-changer standard-icon" ng-class="{active: layout.type== 'standard'}">
+                        Standard
+                    </md-button>
+                    <md-button ng-click="layout.updateCalculator('shared')" ng-disabled="layout.type== 'shared'" class="tool-icon config-changer shared-icon" ng-class="{active: layout.type== 'shared'}">
+                        Shared
+                    </md-button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-1 left-icons">
+                <md-button class="tool-icon save-icon" ng-click="project.save($event)">
+                    <md-tooltip md-direction="right">
+                        Save
+                    </md-tooltip>
+                </md-button>
+                <md-button class="tool-icon bom-icon" ui-sref="project.bom">
+                    <md-tooltip md-direction="right">
+                        Quote/BOM
+                    </md-tooltip>
+                </md-button>
+                <md-button class="tool-icon print-icon" ng-click="printReport()">
+                    <md-tooltip md-direction="right">
+                        Print
+                    </md-tooltip>
+                </md-button>
+                <md-button class="" ng-mouseover="svgClass = 'sp'" ng-mouseleave="svgClass = ''">
+                    <i class="tool-icon yellow-bar"></i>
+                    <span class="btn-text">
+                        Splice Location
+                    </span>
+                    &lt;!&ndash;<md-tooltip md-direction="right">
+                        Splice Location
+                    </md-tooltip>&ndash;&gt;
+                </md-button>
+                <md-button class="" ng-mouseover="svgClass = 'lf'" ng-mouseleave="svgClass = ''">
+                    <i class="tool-icon purple-bar"></i>
+                    <span class="btn-text">
+                        Attachment Point
+                    </span>
+                    &lt;!&ndash;<md-tooltip md-direction="right">
+                        Attachment Point
+                    </md-tooltip>&ndash;&gt;
+                </md-button>
+                <md-button class="" ng-mouseover="svgClass = 'sf'" ng-mouseleave="svgClass = ''">
+                    <i class="tool-icon green-bar"></i>
+                    <span class="btn-text">
+                        Solar SpeedFoot
+                    </span>
+                    &lt;!&ndash;<md-tooltip md-direction="right">
+                        Solar SpeedFoot
+                    </md-tooltip>&ndash;&gt;
+                </md-button>
+                <md-button class="" ng-mouseover="svgClass = 'ec'" ng-mouseleave="svgClass = ''">
+                    <i class="tool-icon red-bar"></i>
+                    <span class="btn-text">
+                        End Clamp
+                    </span>
+                    &lt;!&ndash;<md-tooltip md-direction="right">
+                        End Clamp
+                    </md-tooltip>&ndash;&gt;
+                </md-button>
+                <md-button class="" ng-mouseover="svgClass = 'mc'" ng-mouseleave="svgClass = ''">
+                    <i class="tool-icon orange-bar"></i>
+                    <span class="btn-text">
+                        Mid Clamp
+                    </span>
+                    &lt;!&ndash;<md-tooltip md-direction="right">
+                        Mid Clamp
+                    </md-tooltip>&ndash;&gt;
+                </md-button>
+            </div>
+            <div class="col-xs-11">
+                <div ng-repeat="layout in project.getAllLayout()" ng-show="layout.isActive" class="row layout-holder">
+                    <div onselectstart="return false" id="layout-{{$index}}">
+                        <div class="{{ svgClass }}" flex >
+
+                            <single-layout
+                                    dm-layout="layout"
+                                    changed="config.changed"
+                                    id="{{layout.id}}"
+                            >
+                            </single-layout>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-2 col-xs-2">
+        <div class="color-icons">
+            <h4>
+                Default Color
+            </h4>
+            <md-button class="tool-icon bc-icon" ng-class="{current:config.defaultColor == 'BC'}" ng-click="config.setColor('BC')">
+                <md-tooltip md-direction="left">
+                    Black Finish
+                </md-tooltip>
+            </md-button>
+            <md-button class="tool-icon mf-icon" ng-class="{current:config.defaultColor == 'MF'}" ng-click="config.setColor('MF')">
+                <md-tooltip md-direction="right">
+                    Mill Finish
+                </md-tooltip>
+            </md-button>
+        </div>
+        <md-button class="layout-button tool-icon" ng-class="{active: layout.isActive}" ng-disabled="layout.isActive" ng-click="project.showLayout($index)" ng-repeat="layout in project.getAllLayout()">
+            <span ng-class="{disabled: project.getAllLayout().length == 1}" class="tool-icon remove-button" ng-click="project.removeLayout($event, $index)"></span>
+            <md-tooltip md-direction="left">
+                {{ layout.name }}
+            </md-tooltip>
+        </md-button>
+        <md-button class="layout-button tool-icon add-icon" ng-click="project.addLayout()">
+            <md-tooltip md-direction="left">
+                Add Layout
+            </md-tooltip>
+        </md-button>
+    </div>
+</div>
+
+<div layout="row" class="bottom-bar">
+    <div flex="60" layout="column">
+        <h2 class="bold-title">Site Details</h2>
+        <div layout="row" class="">
+            <div flex="30">
+                <md-card flex>
+                    <md-card-content>
+                        <h2 class="md-title">Exposure Type</h2>
+                        <div>
+                            <md-select class="" flex placeholder="Select Exposure Type" class="" ng-model="config.exposerType" ng-change="project.setSpan()">
+                                <md-select-label>{{project.exposerTypes[config.exposerType].name}}</md-select-label>
+                                <md-option ng-value="$index" ng-repeat="opt in project.exposerTypes">{{ opt.name }}</md-option>
+                            </md-select>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div flex="30">
+                <md-card flex>
+                    <md-card-content>
+                        <h2 class="md-title">Wind Zone</h2>
+                        <div>
+                            <md-select class="" flex placeholder="Select Winde Zone" class="" ng-model="config.windZoneType" ng-change="project.configUpdated()">
+                                <md-select-label>{{project.windZoneTypes[config.windZoneType].name}}</md-select-label>
+                                <md-option ng-value="$index" ng-repeat="opt in project.windZoneTypes">{{ opt.name }}</md-option>
+                            </md-select>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div flex="20">
+                <md-card flex>
+                    <md-card-content>
+                        <h2 class="md-title">Wind Speed</h2>
+                        <div>
+                            <md-input-container flex md-no-float>
+                                <input type="number" min="0" max="50" required ng-change="project.setSpan()" ng-model="config.windSpeed" placeholder="Enter the Wind Speed here...">
+                            </md-input-container>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div flex="20">
+                <md-card flex>
+                    <md-card-content>
+                        <h2 class="md-title">Snow Load</h2>
+                        <div>
+                            <md-input-container flex md-no-float>
+                                <input type="number" min="0" max="160" required ng-change="project.setSpan()" ng-model="config.snowLoad" placeholder="Enter the Snow load here...">
+                            </md-input-container>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+        <div layout="row" class="no-top">
+            <div flex="30">
+                <md-card flex>
+                    <md-card-content>
+                        <h2 class="md-title">Roof Pitch</h2>
+                        <div>
+                            <md-select class="" flex placeholder="Select Roof Pitch" class="" ng-model="config.roofPitch" ng-change="project.configUpdated()">
+                                <md-select-label>{{project.roofPitches[config.roofPitch].name}}</md-select-label>
+                                <md-option ng-disabled="opt.disabled" ng-value="$index" ng-repeat="opt in project.roofPitches">{{ opt.name }}</md-option>
+                            </md-select>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div flex="30">
+                <md-card flex>
+                    <md-card-content>
+                        <h2 class="md-title">Building Code</h2>
+                        <div >
+                            <md-select flex="100" class="" placeholder="Select Building Code" ng-model="config.buildingCode">
+                                <md-select-label>{{project.buildingTypes[config.buildingCode].name}}</md-select-label>
+                                <md-option ng-value="$index" ng-repeat="opt in project.buildingTypes">{{ opt.name }}</md-option>
+                            </md-select>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div flex="20" class="text-center">
+                <h2 class="md-title">Insert <br/>SpeedFoot</h2>
+                <div>
+                    <label class="switch">
+                        <input aria-label="Switch SpeedFoot" ng-disabled="config.disableSpeedFoot" ng-model="config.useSpeedFoot" ng-change="project.setSpan();project.configUpdated();" type="checkbox" class="switch-input">
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+            </div>
+            <div flex="20" class="text-center">
+                <h2 class="md-title">Micro-Inverter/Optimizer<br/>Mounting Kit </h2>
+                <div>
+                    <label class="switch">
+                        <input aria-label="Switch Inverter Bracket" ng-model="config.useIB" ng-change="project.configUpdated()" type="checkbox" class="switch-input">
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  flex="40" layout="column">
+        <h2 class="bold-title">Span Selection</h2>
+        <md-card flex>
+            <md-card-content>
+                <div layout="row">
+                    <div flex="20">
+                        <p class="span-text">
+                            Span Selection
+                        </p>
+                    </div>
+                    <div flex="60">
+                        <div layout="row" layout-align="space-between center" class="span-holder">
+                            <div>{{config.rafterDistance >= 13 ? config.rafterDistance : config.rafterDistance * 2}}"</div>
+                            <div>144"</div>
+                        </div>
+                        <div layout="row">
+                            <div flex="{{config.getMaxSpanLength()}}" class="span-main">
+                                <div>
+                                    <md-slider class="md-accent" flex ng-model="config.span"
+                                               ng-change="project.configUpdated()" step="{{config.rafterDistance}}"
+                                               min="{{config.rafterDistance >= 13 ? config.rafterDistance : config.rafterDistance * 2}}" max="{{config.maxSpan}}"
+                                               md-discrete aria-label="Span">
+                                    </md-slider>
+                                </div>
+                            </div>
+                            <div flex="{{100 - config.getMaxSpanLength()}}" class="span-extend">
+                                <md-slider tabindex="0" role="none" class="md-default-theme md-warn no-thumb"
+                                           aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="SpanExtend">
+                                    <div class="md-slider-wrapper">
+                                        <div class="md-track-container">
+                                            <div class="md-track"></div>
+                                            <div class="md-track md-track-fill" style="width: 100%;"></div>
+                                            <div class="md-track-ticks"></div>
+                                        </div>
+                                        <div class="md-thumb-container" style="left: 46%; display: none;"></div>
+                                    </div>
+                                </md-slider>
+                            </div>
+                        </div>
+                    </div>
+                    <div flex></div>
+                    <div flex="20">
+                        <p class="span-text2">
+                            Maximum Cantilever <br />
+                            <b>{{config.getCantilever()}}</b>
+                        </p>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+        <div class="no-top" layout="row">
+            <div flex="35">
+                <md-card flex>
+                    <md-card-content>
+                        <h2 class="md-title">Rafter Distance</h2>
+                        <div >
+                            <md-select flex="100" class="" placeholder="Select Rafter Distance" ng-model="config.rafterDistance" ng-change="project.configUpdated()">
+                                <md-select-label>{{config.rafterDistance}}</md-select-label>
+                                <md-option ng-value="12">12</md-option>
+                                <md-option ng-value="16">16</md-option>
+                                <md-option ng-value="24">24</md-option>
+                                <md-option ng-value="20">Custom</md-option>
+                            </md-select>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div flex="35" ng-hide="config.showCustomRafter()">
+                <md-card flex>
+                    <md-card-content>
+                        <h2 class="md-title">Custom (May not be accurate)</h2>
+                        <div>
+                            <md-input-container flex md-no-float>
+                                <input required ng-model="config.rafterDistance" type="number" min="10" aria-label="change rafter Distance" ng-change="project.configUpdated()">
+                            </md-input-container>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            <div flex="30" ng-hide="!config.useSpeedFoot">
+                <md-card flex>
+                    <md-card-content>
+                        <h2 class="md-title">SpeedFoot Spacing</h2>
+                        <div >
+                            <md-select flex="100" class="" placeholder="SpeedFoot Spacing" ng-model="config.speedFootType" ng-change="project.configUpdated()">
+                                <md-option ng-value="0" >Every Rafter</md-option>
+                                <md-option ng-value="1" >Every Other Rafter</md-option>
+                            </md-select>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </div>
+</div>
+<div ui-view></div>
+<div class="dark-bg" hide></div>

@@ -1,0 +1,219 @@
+<div class="dark-bg"></div>
+<div id="product-selector" class="loading">
+    <div class="row">
+        <div class="sidebar ">
+            <div class="sidebar-inner md-padding">
+                <div class="sidebar-title">
+                        <h4>Refine your search by</h4>
+                </div>
+                <div class="sidebar-box">
+                        <md-input-container flex>
+                            <label>Type Here</label>
+                            <input required ng-model="searchtext" aria-label="Type Here">
+                        </md-input-container>
+                </div>
+                <div class="sidebar-box">
+                        <md-checkbox ng-model="onSale" aria-label="onSale">
+                            &nbsp;&nbsp;<img ng-src="/images/on-sale.png" width="55"/>
+                        </md-checkbox>
+                </div>
+                <p>&nbsp;</p>
+                <div class="sidebar-box products">
+                    <ul class="sub">
+                        <a href="javascript:return false;" ng-click="changeSub(cat.id);" ng-repeat="cat in subcats">
+                            <li ng-class="{'active': subId === cat.id}">
+                                {{cat.name}}
+                                <i class="fa " ng-class="{ true: 'fa-minus', false: 'fa-plus'}[subId === cat.id]"></i>
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+                <div class="sidebar-box"  ng-if="manufacturers.length !== 0">
+                    <h5 ng-click="showManufacturer = !showManufacturer" slide-toggle="#manufac">
+                        Manufacturer
+                        <span class="pull-right">
+                            <i class="fa" ng-class="showManufacturer ? 'fa-arrow-right' : 'fa-arrow-down'"></i>
+                        </span>
+                    </h5>
+                    <div id="manufac"  class="slideable">
+                        <md-checkbox ng-model="manufacturer[manu.id]" ng-class="{'text-bold':manu.featured > 0}" aria-label="Checkbox {{manu.name}}" ng-repeat="manu in manufacturers">
+                           {{manu.name}}({{manu.count}})
+                        </md-checkbox>
+                    </div>
+                </div>
+                <div class="sidebar-box" ng-if="priceFilter">
+                    <h5 ng-click="showPriceSlider = !showPriceSlider" slide-toggle="#showPriceSlider">
+                        Price [$]
+                        <span class="pull-right">
+                            <i class="fa" ng-class="showPriceSlider ? 'fa-arrow-right' : 'fa-arrow-down'"></i>
+                        </span>
+                    </h5>
+                    <div id="showPriceSlider"  class="slideable">
+                        <rzslider
+                            rz-slider-model="priceSlider.min"
+                            rz-slider-high="priceSlider.max"
+                            rz-slider-options="priceSlider.options">
+                        </rzslider>
+                    </div>
+                </div>
+                <div class="sidebar-box" ng-if="ppdFilter">
+                    <h5 ng-click="showPpdSlider = !showPpdSlider" slide-toggle="#showPpdSlider">
+                        Price Per Watt [$/W]
+                        <span class="pull-right">
+                            <i class="fa" ng-class="showPpdSlider ? 'fa-arrow-right' : 'fa-arrow-down'"></i>
+                        </span>
+                    </h5>
+                    <div id="showPpdSlider"  class="slideable">
+                        <rzslider
+                            rz-slider-model="ppdSlider.min"
+                            rz-slider-high="ppdSlider.max"
+                            rz-slider-options="ppdSlider.options">
+                        </rzslider>
+                    </div>
+                </div>
+                <div class="sidebar-box" ng-if="powerFilter">
+                    <h5 ng-click="showPowerSlider = !showPowerSlider" slide-toggle="#showPowerSlider">
+                        Rated Power Output [W]
+                        <span class="pull-right">
+                            <i class="fa" ng-class="showPowerSlider ? 'fa-arrow-right' : 'fa-arrow-down'"></i>
+                        </span>
+                    </h5>
+                    <div id="showPowerSlider" class="slideable">
+                        <rzslider
+                            rz-slider-model="powerSlider.min"
+                            rz-slider-high="powerSlider.max"
+                            rz-slider-options="powerSlider.options">
+                        </rzslider>
+                    </div>
+                </div>
+                <div class="sidebar-box" ng-if="colors.length !== 0">
+                    <h5 ng-click="showColor = !showColor" slide-toggle="#showColor">
+                        Product Color
+                        <span class="pull-right">
+                            <i class="fa" ng-class="showColor ? 'fa-arrow-right' : 'fa-arrow-down'"></i>
+                        </span>
+                    </h5>
+                    <div id="showColor" class="slideable">
+                        <md-checkbox ng-model="color[manu.id]" aria-label="Checkbox {{manu.name}}" ng-repeat="manu in colors">
+                            {{manu.name}}({{manu.count}})
+                        </md-checkbox>
+                    </div>
+                </div>
+                <div class="sidebar-box" ng-if="cellTechs.length !== 0">
+                    <h5 ng-click="showCellTech = !showCellTech" slide-toggle="#showCellTech">
+                        Cell Technology
+                        <span class="pull-right">
+                            <i class="fa" ng-class="showCellTech ? 'fa-arrow-right' : 'fa-arrow-down'"></i>
+                        </span>
+                    </h5>
+                    <div id="showCellTech" class="slideable">
+                        <md-checkbox ng-model="cellTech[manu.id]" aria-label="Checkbox {{manu.name}}" ng-repeat="manu in cellTechs">
+                            {{manu.name}}({{manu.count}})
+                        </md-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="top-panel" >
+                <div layout="row">
+                    <div class="ctrls" layout flex layout-align="space-between center">
+                        <div flex>
+                            <dir-pagination-controls></dir-pagination-controls>
+                        </div>
+                        <div flex="20">
+                            <md-select flex placeholder="Default" class="sorting" ng-model="sorter">
+                                <md-option value="">Default</md-option>
+                                <md-option value="priceMax">Price (Low to High)</md-option>
+                                <md-option value="-priceMax">Price (High to Low)</md-option>
+                                <md-option value="name">Name (A to Z)</md-option>
+                                <md-option value="-name">Name (Z to A)</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div flex="5">
+                        <span class="close-btn" ng-click="closeSelector()">X</span>
+                    </div>
+                </div>
+            </div>
+            <div class="scroller">
+                <div class="md-padding">
+                    <div layout="row" layout-wrap class="list-item store" dir-paginate="product in products | filter:searchtext | filter:filterProduct() | filter:filterCell() | orderBy:orderArr() | itemsPerPage: 10">
+                        <div flex-gt-md="25">
+                            <div id="w8" class="carousel slide">
+                                <div class="carousel-inner text-center">
+                                    <a ng-click="selectProduct(product)"class="item active">
+                                        <img ng-src="{{ product.image }}" class="img-responsive img-thumbnail overlay-plus" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div flex-gt-md="75" layout="column">
+                            <div class="heading-product">
+                                <h4>
+                                    <a ng-click="selectProduct(product)">{{ product.name }}</a>
+                                </h4>
+                                <span class="onsale" ng-if="product.on_sale"><img ng-src="/images/on-sale.png" /></span>
+                                <hr class="blue-line">
+                            </div>
+                            <div class="info-product">
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <div class="rateit" data-rateit-resetable="false" data-rateit-readonly="true" data-rateit-min="0" data-rateit-max="5" data-rateit-starwidth="16" data-rateit-starheight="16">
+                                            <div id="rateit-range-5" class="rateit-range" tabindex="0" aria-label="rating" aria-owns="rateit-reset-5" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-readonly="true" style="width: 80px; height: 16px;">
+                                                <div class="rateit-selected" style="height: 16px; width: {{ product.rating * 16 }}px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p><b>Product Description: </b></p>
+                                <div ng-bind-html="renderHtml(product.features)"></div>
+                                <hr class="blue-line">
+                            </div>
+                            <div class="" layout>
+                                <div class="table-info" flex-gt-md="100">
+                                    <!--<h3>Discount Rate Chart</h3>-->
+                                    <table ng-if="product.prices.length == 1" class="table table-bordered table-responsive table-striped table-hover text-center">
+                                        <thead>
+                                            <tr>
+                                                <th class="middled">
+                                                    Price <span class="text-green" ng-if="product.need_shipping && product.free_shipping">(Free shipping)</span>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table ng-if="product.prices.length > 1" class="table table-bordered table-responsive table-striped table-hover text-center">
+                                        <thead>
+                                            <tr>
+                                                <th class="middled" >
+                                                    Quantity
+                                                </th>
+                                                <th  class="middled">
+                                                    Price  <span class="text-green" ng-if="product.need_shipping && product.free_shipping">(Free shipping)</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="price in product.prices">
+                                                <td>
+                                                    {{price.min}}{{price.max > 0 ? '-'+price.max : '+'}}
+                                                </td>
+                                                <td>
+                                                    {{price.price | currency}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div flex="100" layout>
+                            <div flex-gt-md="100"><hr></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,197 @@
+/* The Modal (background) */
+.s2_modal {
+    display: none; 
+    position: fixed; 
+    z-index: 200; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+
+/* Modal Content/Box */
+.s2_modal-content {
+    background-color: #363636;
+    margin: 50px auto; 
+    margin-top: 70px;
+    padding: 5px;
+    width: 430px; 
+    border-radius: 7px;
+    position: relative;
+}
+
+.s2_modal_header h5{
+    color: #000000;
+    font-weight: bold;
+}
+
+.s2_avg_cost{
+    color: #000000;
+    font-weight: bold;
+}
+
+.s2_modal_content1{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 100%;
+    background: #ffffff;
+    padding: 10px 35px;
+}
+
+.s2_modal_content3{
+    width: 100%;
+    background: #ffffff;
+    padding: 10px 35px;
+    margin-top: 5px;
+    color: #363636;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.s2_modal_row{
+    margin-top: 5px;
+}
+
+.s2_modal_content2{
+    margin: 20px;
+}
+
+.s2_modal_content2 h4{
+    color: #ffffff;
+}
+
+.s2_separate_line{
+    height: 2px;
+    width: 100%;
+    background: #b5e31b;
+}
+
+.s2_modal_content2 h5{
+    color: #ffffff;
+}
+
+.s2_btn_save_data{
+    background: #b5e31b;
+    color: #fefefe;
+    border: 3px solid #d4ff46;
+    padding: 7px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 80%;
+}
+
+.s2_btn_clear_data{
+    background: #707070;
+    color: #fefefe;
+    border: 3px solid #999999;
+    padding: 7px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 80%;
+}
+
+.s2_btn_sun_map{
+    background: #00aeef;
+    color: #fefefe;
+    border: 3px solid #70d8ff;
+    padding: 7px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 80%;    
+}
+
+.s2_close{
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+
+.s2_close:hover,
+.s2_close:focus{
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.s2_modal_sysloss_label
+{
+    font-size:12px;
+    color:#959595;
+    font-weight:bold;
+}
+
+.s2_modal_sysloss_input{
+    border:2px solid #c6ccd2;
+}
+
+.s2_modal_sysloss_input:hover{
+    border:2px solid #000;   
+}
+
+.s2_modal_sysloss_info:hover{
+    color: #00aeef;
+    cursor: pointer;
+}
+
+.s2_modal_sysloss_row{
+    display:flex; 
+    align-items:center; 
+    margin-top:10px;
+}
+
+.s2_btn_m2_help{    
+    background: #00aeef;
+    color: #fefefe;
+    border: 3px solid #70d8ff;
+    padding: 7px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 80%;    
+}
+
+.s2_btn_m2_reset{
+    background: #00aeef;
+    color: #fefefe;
+    border: 3px solid #70d8ff;
+    padding: 7px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 80%;        
+}
+
+.s2_btn_m2_cancel{
+    background: #707070;
+    color: #fefefe;
+    border: 3px solid #999999;
+    padding: 7px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 80%;    
+}
+
+.s2_btn_m2_savedt
+{
+    background: #b5e31b;
+    color: #fefefe;
+    border: 3px solid #d4ff46;
+    padding: 7px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 80%;
+}

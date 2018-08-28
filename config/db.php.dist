@@ -1,0 +1,9 @@
+<?php
+// Copy this to config/db.php and update credentials below.
+return [
+    'class' => 'yii\db\Connection',
+    'dsn' => 'mysql:host=localhost;dbname=oneclicksolar',
+    'username' => 'oneclicksolar',
+    'password' => 'password',
+    'charset' => 'utf8',
+];

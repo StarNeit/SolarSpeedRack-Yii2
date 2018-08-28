@@ -1,0 +1,22 @@
+.rs-control .rs-range-color {
+    background-color: #ffffff;
+}
+.rs-control .rs-path-color {
+    background-color: #ffffff;
+}
+.rs-control .rs-handle {
+    background-color: #b5e31b;
+}
+.rs-control .rs-bg-color {
+    background-color: #ffffff;
+}
+.rs-control .rs-outer{
+    /*border: 2px dashed #f6f6f6;*/
+    border: 2px dashed transparent;
+}
+.rs-control .rs-inner{
+    border: 2px solid #757575;
+}
+.rs-seperator {
+	border: 0px solid #fff;
+}

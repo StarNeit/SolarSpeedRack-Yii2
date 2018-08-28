@@ -1,0 +1,4 @@
+Available user roles:
+admin
+member
+installer
